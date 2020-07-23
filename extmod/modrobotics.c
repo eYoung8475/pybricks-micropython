@@ -269,6 +269,7 @@ STATIC const mp_obj_type_t robotics_DriveBase_type = {
     { &mp_type_type },
     .name = MP_QSTR_DriveBase,
     .make_new = robotics_DriveBase_make_new,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&robotics_DriveBase_locals_dict,
 };
 

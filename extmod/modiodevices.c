@@ -124,6 +124,7 @@ STATIC MP_DEFINE_CONST_DICT(iodevices_LUMPDevice_locals_dict, iodevices_LUMPDevi
 STATIC const mp_obj_type_t iodevices_LUMPDevice_type = {
     { &mp_type_type },
     .make_new = iodevices_LUMPDevice_make_new,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&iodevices_LUMPDevice_locals_dict,
 };
 
@@ -596,6 +597,7 @@ STATIC MP_DEFINE_CONST_DICT(iodevices_Ev3devSensor_locals_dict, iodevices_Ev3dev
 STATIC const mp_obj_type_t iodevices_Ev3devSensor_type = {
     { &mp_type_type },
     .make_new = iodevices_Ev3devSensor_make_new,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&iodevices_Ev3devSensor_locals_dict,
 };
 

@@ -195,6 +195,7 @@ STATIC const mp_obj_type_t pupdevices_ColorDistanceSensor_type = {
     { &mp_type_type },
     .name = MP_QSTR_ColorDistanceSensor,
     .make_new = pupdevices_ColorDistanceSensor_make_new,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&pupdevices_ColorDistanceSensor_locals_dict,
 };
 

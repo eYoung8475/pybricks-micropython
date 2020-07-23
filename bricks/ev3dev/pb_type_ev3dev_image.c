@@ -591,5 +591,6 @@ const mp_obj_type_t pb_type_ev3dev_Image = {
     { &mp_type_type },
     .name = MP_QSTR_Image,
     .make_new = ev3dev_Image_make_new,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&ev3dev_Image_locals_dict,
 };

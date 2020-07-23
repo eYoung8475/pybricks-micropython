@@ -14,6 +14,7 @@
 #include "py/obj.h"
 #include "py/runtime.h"
 
+#include "pbobj.h"
 #include "pb_ev3dev_types.h"
 
 typedef struct _ev3dev_Font_obj_t {
@@ -149,6 +150,7 @@ const mp_obj_type_t pb_type_ev3dev_Font = {
     { &mp_type_type },
     .name = MP_QSTR_Font,
     .make_new = ev3dev_Font_make_new,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&ev3dev_Font_locals_dict,
 };
 

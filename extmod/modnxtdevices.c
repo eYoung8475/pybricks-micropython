@@ -355,6 +355,7 @@ STATIC const mp_obj_type_t nxtdevices_ColorSensor_type = {
     { &mp_type_type },
     .name = MP_QSTR_ColorSensor,
     .make_new = nxtdevices_ColorSensor_make_new,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&nxtdevices_ColorSensor_locals_dict,
 };
 

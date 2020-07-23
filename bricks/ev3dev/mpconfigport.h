@@ -90,7 +90,6 @@ static const char pybricks_ev3dev_help_text[] =
 #define MICROPY_PY_ARRAY_SLICE_ASSIGN (1)
 #define MICROPY_PY_BUILTINS_SLICE_ATTRS (1)
 #define MICROPY_PY_BUILTINS_SLICE_INDICES (1)
-#define MICROPY_PY_INSTANCE_ATTRS   (1)
 #define MICROPY_PY_SYS_EXIT         (1)
 #define MICROPY_PY_SYS_ATEXIT       (1)
 #if MICROPY_PY_SYS_SETTRACE

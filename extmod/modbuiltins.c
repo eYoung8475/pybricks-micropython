@@ -407,5 +407,6 @@ STATIC MP_DEFINE_CONST_DICT(builtins_Control_locals_dict, builtins_Control_local
 const mp_obj_type_t builtins_Control_type = {
     { &mp_type_type },
     .name = MP_QSTR_Control,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&builtins_Control_locals_dict,
 };

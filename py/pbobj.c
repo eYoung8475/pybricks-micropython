@@ -66,3 +66,23 @@ mp_obj_t pb_obj_get_base_class_obj(mp_obj_t obj, const mp_obj_type_t *type) {
     pb_assert_type(obj, type);
     return MP_OBJ_NULL;
 }
+
+const mp_obj_type_t mp_type_offset = {
+    { &mp_type_type },
+    .name = MP_QSTR_offset,
+};
+
+void pb_obj_generic_and_offset_attr(mp_obj_t self_in, qstr attr, mp_obj_t *dest) {
+    const mp_obj_type_t *type = mp_obj_get_type(self_in);
+    if (dest[0] == MP_OBJ_NULL && type->locals_dict != NULL) {
+        assert(type->locals_dict->base.type == &mp_type_dict);
+        mp_map_elem_t *elem = mp_map_lookup(&type->locals_dict->map, MP_OBJ_NEW_QSTR(attr), MP_MAP_LOOKUP);
+        if (elem != NULL && MP_OBJ_IS_SMALL_INT(elem->value)) {
+            // Get offset to find address of the requested attribute
+            size_t offset = MP_OBJ_SMALL_INT_VALUE(elem->value);
+            dest[0] = *(mp_obj_t *)((char *)MP_OBJ_TO_PTR(self_in) + offset);
+            return;
+        }
+    }
+    dest[1] = MP_OBJ_SENTINEL;
+}

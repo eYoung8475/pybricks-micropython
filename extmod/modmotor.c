@@ -477,6 +477,7 @@ const mp_obj_type_t motor_Motor_type = {
     .name = MP_QSTR_Motor,
     .print = motor_DCMotor_print,
     .make_new = motor_Motor_make_new,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&motor_Motor_locals_dict,
 };
 

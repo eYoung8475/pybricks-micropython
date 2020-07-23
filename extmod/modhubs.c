@@ -59,6 +59,7 @@ STATIC const mp_obj_type_t hubs_EV3Brick_type = {
     { &mp_type_type },
     .name = MP_QSTR_EV3Brick,
     .make_new = hubs_EV3Brick_make_new,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&hubs_EV3Brick_locals_dict,
 };
 
@@ -123,6 +124,7 @@ STATIC const mp_obj_type_t hubs_MoveHub_type = {
     { &mp_type_type },
     .name = MP_QSTR_MoveHub,
     .make_new = hubs_MoveHub_make_new,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&hubs_MoveHub_locals_dict,
 };
 
@@ -162,6 +164,7 @@ STATIC const mp_obj_type_t hubs_CityHub_type = {
     { &mp_type_type },
     .name = MP_QSTR_CityHub,
     .make_new = hubs_CityHub_make_new,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&hubs_CityHub_locals_dict,
 };
 
@@ -201,6 +204,7 @@ STATIC const mp_obj_type_t hubs_CPlusHub_type = {
     { &mp_type_type },
     .name = MP_QSTR_CPlusHub,
     .make_new = hubs_CPlusHub_make_new,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&hubs_CPlusHub_locals_dict,
 };
 
@@ -245,6 +249,7 @@ STATIC const mp_obj_type_t hubs_PrimeHub_type = {
     .name = MP_QSTR_PrimeHub,
     .print = hubs_PrimeHub_print,
     .make_new = hubs_PrimeHub_make_new,
+    .attr = pb_obj_generic_and_offset_attr,
     .locals_dict = (mp_obj_dict_t *)&hubs_PrimeHub_locals_dict,
 };
 
