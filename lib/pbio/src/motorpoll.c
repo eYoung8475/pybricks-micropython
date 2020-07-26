@@ -104,6 +104,10 @@ void _pbio_motorpoll_poll(void) {
     for (int i = 0; i < PBDRV_CONFIG_NUM_MOTOR_CONTROLLER; i++) {
         // Poll servo again if it says so, and save error if encountered
         if (servo_err[i] == PBIO_ERROR_AGAIN) {
+            err = pbio_tacho_update(servo[i].tacho);
+            if (err != PBIO_SUCCESS) {
+                servo_err[i] = err;
+            }
             err = pbio_servo_control_update(&servo[i]);
             if (err != PBIO_SUCCESS) {
                 servo_err[i] = err;

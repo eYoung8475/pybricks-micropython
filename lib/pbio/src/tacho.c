@@ -7,15 +7,22 @@
 
 #include <inttypes.h>
 
+#include <contiki.h>
+
 #include <pbio/math.h>
 #include <pbio/port.h>
 #include <pbio/tacho.h>
+#include <pbio/util.h>
 
 struct _pbio_tacho_t {
     pbio_direction_t direction;
     int32_t offset;
     fix16_t counts_per_degree;
     pbdrv_counter_dev_t *counter;
+    int32_t angle_stamps[60 / PBIO_CONFIG_SERVO_PERIOD_MS];
+    int32_t time_stamps[60 / PBIO_CONFIG_SERVO_PERIOD_MS]; // FIXME: only need timestamps on ev3dev
+    int32_t rate;
+    uint32_t stamp_index;
 };
 
 static pbio_tacho_t tachos[PBDRV_CONFIG_NUM_MOTOR_CONTROLLER];
@@ -76,6 +83,22 @@ static pbio_error_t pbio_tacho_setup(pbio_tacho_t *tacho, uint8_t counter_id, pb
         // If not available, set it to 0
         err = pbio_tacho_reset_count(tacho, 0);
     }
+
+    // Reset angle and timestamps
+    int32_t time_now = clock_usecs();
+    int32_t encoder_now;
+
+    err = pbio_tacho_get_count(tacho, &encoder_now);
+    if (err != PBIO_SUCCESS) {
+        return err;
+    }
+
+    for (uint32_t i = 0; i < PBIO_ARRAY_SIZE(tacho->angle_stamps); i++) {
+        tacho->angle_stamps[i] = encoder_now;
+        tacho->time_stamps[i] = time_now;
+    }
+    tacho->rate = 0;
+
     return err;
 }
 
@@ -135,17 +158,22 @@ pbio_error_t pbio_tacho_reset_angle(pbio_tacho_t *tacho, int32_t reset_angle, bo
     }
 }
 
+#include <stdio.h>
+
 pbio_error_t pbio_tacho_get_rate(pbio_tacho_t *tacho, int32_t *rate) {
-    pbio_error_t err;
 
-    err = pbdrv_counter_get_rate(tacho->counter, rate);
-    if (err != PBIO_SUCCESS) {
-        return err;
-    }
 
-    if (tacho->direction == PBIO_DIRECTION_COUNTERCLOCKWISE) {
-        *rate = -*rate;
-    }
+    *rate = tacho->rate;
+    // pbio_error_t err;
+
+    // err = pbdrv_counter_get_rate(tacho->counter, rate);
+    // if (err != PBIO_SUCCESS) {
+    //     return err;
+    // }
+
+    // if (tacho->direction == PBIO_DIRECTION_COUNTERCLOCKWISE) {
+    //     *rate = -*rate;
+    // }
 
     return PBIO_SUCCESS;
 }
@@ -160,6 +188,29 @@ pbio_error_t pbio_tacho_get_angular_rate(pbio_tacho_t *tacho, int32_t *angular_r
     }
 
     *angular_rate = pbio_math_div_i32_fix16(encoder_rate, tacho->counts_per_degree);
+
+    return PBIO_SUCCESS;
+}
+
+
+pbio_error_t pbio_tacho_update(pbio_tacho_t *tacho) {
+
+    // FIXME: make part of regular loop, avoiding extra time/angle read
+    int32_t time_now = clock_usecs();
+    int32_t encoder_now;
+    pbio_error_t err;
+
+    err = pbio_tacho_get_count(tacho, &encoder_now);
+    if (err != PBIO_SUCCESS) {
+        return err;
+    }
+
+    tacho->rate = (1000000 * (encoder_now - tacho->angle_stamps[tacho->stamp_index])) / (time_now - tacho->time_stamps[tacho->stamp_index]);
+
+    tacho->angle_stamps[tacho->stamp_index] = encoder_now;
+    tacho->time_stamps[tacho->stamp_index] = time_now;
+
+    tacho->stamp_index = (tacho->stamp_index + 1) % PBIO_ARRAY_SIZE(tacho->angle_stamps);
 
     return PBIO_SUCCESS;
 }

@@ -88,14 +88,14 @@ static pbio_control_settings_t settings_servo_boost_interactive = {
 
 static pbio_control_settings_t settings_servo_cplus_xl = {
     .max_rate = 1000,
-    .abs_acceleration = 4000,
+    .abs_acceleration = 2000,
     .rate_tolerance = 50,
     .count_tolerance = 10,
     .stall_rate_limit = 20,
     .stall_time = 200 * US_PER_MS,
-    .pid_kp = 250,
+    .pid_kp = 175,
     .pid_ki = 350,
-    .pid_kd = 0,
+    .pid_kd = 4,
     .integral_range = 45,
     .integral_rate = 5,
     .max_control = 10000,
